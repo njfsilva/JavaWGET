@@ -25,9 +25,9 @@ public class PageDownloadQueue {
 		catch(NoSuchElementException e)
 		{
 			emptyCounter--;
+			
 			if(pageQueue.isEmpty())
 			{
-				emptyCounter--;
 				if(emptyCounter<=0)
 				{
 					canTerminate = true;
