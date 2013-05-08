@@ -4,21 +4,26 @@ import java.util.*;
 public class PageDownloadQueue {
 
 	private static ConcurrentLinkedQueue<PageToDownload> pageQueue = new ConcurrentLinkedQueue<PageToDownload>();
-	private boolean canTerminate = false;
-	private final int emptyLimiter = 100;
-	private int emptyCounter = emptyLimiter;
+	private static boolean canTerminate = false;
+	private static final int emptyLimiter = 100;
+	private static int emptyCounter = emptyLimiter;
+	private static HashMap<String, PageToDownload> cyclicLinkMap = new HashMap<String, PageToDownload>();
 
 	public synchronized void pushNewPageToDownload(PageToDownload page) 
 	{
+		if(!isCyclicLink(page))
+		{
 			try
 			{
 				pageQueue.add(page);
+				cyclicLinkMap.put(page.URL(), page);
 				System.out.println("Queued:" + page.URL());
 			}
 			catch(Exception ex)
 			{
 				System.out.println("Error adding page to queue: " + ex.getMessage());
 			}
+		}
 	}
 	
 	public synchronized PageToDownload pullPageToDownload() 
@@ -53,6 +58,15 @@ public class PageDownloadQueue {
 		return canTerminate;
 	}
 	public void setCanTerminate(boolean canTerminate) {
-		this.canTerminate = canTerminate;
+		PageDownloadQueue.canTerminate = canTerminate;
 	}
+	
+	public boolean isCyclicLink(PageToDownload page)
+	{
+		if(cyclicLinkMap.get(page.URL()) != null)
+			return true;
+		
+		return false;
+	}
+	
 }
