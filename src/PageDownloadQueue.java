@@ -8,11 +8,19 @@ public class PageDownloadQueue {
 	private final int emptyLimiter = 100;
 	private int emptyCounter = emptyLimiter;
 
-	public synchronized void pushNewPageToDownload(PageToDownload page) {
-		pageQueue.add(page);
-		System.out.println("Queued:" + page.URL());
-
+	public synchronized void pushNewPageToDownload(PageToDownload page) 
+	{
+			try
+			{
+				pageQueue.add(page);
+				System.out.println("Queued:" + page.URL());
+			}
+			catch(Exception ex)
+			{
+				System.out.println("Error adding page to queue: " + ex.getMessage());
+			}
 	}
+	
 	public synchronized PageToDownload pullPageToDownload() 
 	{
 		PageToDownload page = null;
@@ -47,5 +55,4 @@ public class PageDownloadQueue {
 	public void setCanTerminate(boolean canTerminate) {
 		this.canTerminate = canTerminate;
 	}
-
 }
