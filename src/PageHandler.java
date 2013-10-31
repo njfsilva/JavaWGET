@@ -34,7 +34,6 @@ public class PageHandler extends Thread  {
 
 				if(pageToProcess != null)
 				{
-					//HttpRequest pageRequest = new HttpRequest(pageToProcess.getWebsiteURL(), 80);
 
 					Document doc = Jsoup.connect(pageToProcess.getProtocol()+pageToProcess.getWebsiteURL()+pageToProcess.getWebpage()).get();
 
@@ -44,7 +43,6 @@ public class PageHandler extends Thread  {
 					if(!htmlFile.exists() || !fileType.isEmpty())
 					{
 						//Process HTML resources
-						//Elements links = doc.select("a[href]");
 						Elements media = doc.select("[src]");
 						Elements imports = doc.select("link[href]");
 						String resourceURL = "";
@@ -83,12 +81,6 @@ public class PageHandler extends Thread  {
 							else
 							HttpRequest.binaryFile(resourceURL, saveFolder, ".");
 						}
-
-						/*for (Element link : links) {
-							//formatar links
-
-						}
-						*/
 						
 						//write HTML to disk
 						if(fileType.toLowerCase().equals("html") || fileType.isEmpty())
@@ -109,8 +101,6 @@ public class PageHandler extends Thread  {
 						System.out.println("Skipped: " + pageToProcess.URL() + ", Page already Downloaded.");
 					}
 				}
-				
-				//Thread.sleep(2000);
 			} 
 				catch (IOException | InterruptedException e) {
 					e.printStackTrace();
