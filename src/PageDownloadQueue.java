@@ -39,12 +39,9 @@ public class PageDownloadQueue {
 		{
 			emptyCounter--;
 			
-			if(pageQueue.isEmpty())
+			if(pageQueue.isEmpty() && emptycounter <= 0)
 			{
-				if(emptyCounter<=0)
-				{
-					canTerminate = true;
-				}
+				canTerminate = true;
 			}
 		}
 		return page;
